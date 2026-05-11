@@ -1,4 +1,4 @@
-FROM docker.io/library/alpine
+FROM registry.alpinelinux.org/img/alpine
 
 ENV DART_SDK=/usr/lib/dart
 ENV PATH=$DART_SDK/bin:$PATH
@@ -16,6 +16,8 @@ RUN --mount=type=bind,source=.,target=/build \
         SDK_ARCH=arm64;; \
       armv7) \
         SDK_ARCH=arm;; \
+      loongarch64) \
+        SDK_ARCH=loong64;; \
       riscv64) \
         SDK_ARCH=riscv64;; \
     esac \

@@ -46,7 +46,7 @@ jobs:
 
           mkdir dart-sdk
           cd dart-sdk
-          gclient config --name sdk https://dart.googlesource.com/sdk.git@${{ inputs.ref }}
+          gclient config --name sdk https://github.com/loong64/sdk.git@${{ inputs.ref }}
           gclient sync --no-history
 
       - name: Get Checked-in Dart SDK Version
@@ -61,8 +61,8 @@ jobs:
             gh attestation verify dartsdk-linux-${{ matrix.host-arch }}-release.tar.gz --repo ${{ github.repository }} --signer-workflow ${{ github.repository }}/.github/workflows/build.yml@refs/tags/${{ steps.version.outputs.version }}
             rm -rf dart-sdk/sdk/tools/sdks/dart-sdk
             tar -xzf dartsdk-linux-${{ matrix.host-arch }}-release.tar.gz -C dart-sdk/sdk/tools/sdks
-          else
-            gh workflow run build.yml --repo ${{ github.repository }} --raw-field ref=${{ steps.version.outputs.version }}
+          # else
+            # gh workflow run build.yml --repo ${{ github.repository }} --raw-field ref=${{ steps.version.outputs.version }}
           fi
         env:
           GH_TOKEN: ${{ github.token }}
@@ -108,6 +108,8 @@ jobs:
             target-arch: arm
           - host-arch: arm64
             target-arch: arm64
+          - host-arch: x64
+            target-arch: loong64
           - host-arch: x64
             target-arch: riscv64
           - host-arch: x64
@@ -190,7 +192,7 @@ jobs:
 
       - name: Tag
         run: |
-          if git ls-remote --exit-code --tags https://dart.googlesource.com/sdk.git "${{ inputs.ref }}"; then
+          if git ls-remote --exit-code --tags https://github.com/loong64/sdk.git "${{ inputs.ref }}"; then
             git config user.email 41898282+github-actions[bot]@users.noreply.github.com
             git config user.name github-actions[bot]
             if test -n "$(git tag -l ${{ inputs.ref }})"; then

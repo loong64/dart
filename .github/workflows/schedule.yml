@@ -38,7 +38,7 @@ jobs:
         id: version
         run: |
           if ${{ matrix.channel == 'edge' && 'true' || 'false' }}; then
-            git ls-remote https://dart.googlesource.com/sdk.git HEAD | tee HEAD
+            git ls-remote https://github.com/loong64/sdk.git HEAD | tee HEAD
             echo "${{ matrix.channel }}-version=$(cut -f 1 HEAD)" | tee -a "$GITHUB_OUTPUT"
           else
             curl -fsSL "https://storage.googleapis.com/dart-archive/channels/${{ matrix.channel }}/release/latest/VERSION" | tee VERSION
